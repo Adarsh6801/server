@@ -4,6 +4,8 @@ const connectDB = require('./config/db');
 const userRoutes = require('./routes/userRoutes');
 const reminderRoutes = require('./routes/reminderRoutes');
 require('./helpers/reminderFCM'); // Start the cron job
+require('./helpers/transactionFCM'); // Start the cron job
+
 
 dotenv.config();
 
