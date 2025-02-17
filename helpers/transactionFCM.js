@@ -34,7 +34,7 @@ const sendFCMNotification = async (token, message, user_id) => {
       const allUsers = await User.find();
       for (const user of allUsers) {
         if (user && user.device_info?.fcm) {
-          const message = `Have you marked your transaction today?`;
+          const message = `Don't forget to mark your transaction today!`;
           await sendFCMNotification(user.device_info.fcm, message, user._id);
         }
       }
@@ -54,15 +54,17 @@ checkOverdueReminders();
 
 });
 
-// cron.schedule('*/2 * * * *', () => {
-//     console.log('Running cron job every 2 minutes to check expiring reminders...');
-//     checkExpiringReminders();
-//     checkOverdueReminders();
-//   });
-
-  cron.schedule('*/10 * * * * *', () => {
-    console.log('Running cron job every 10 seconds to check expiring reminders...');
+cron.schedule('*/2 * * * *', () => {
+    console.log('Running cron job every 2 minutes to check expiring reminders...');
     checkExpiringReminders();
-checkOverdueReminders();
+    checkOverdueReminders();
+  });
 
-});
+
+
+//   cron.schedule('*/10 * * * * *', () => {
+//     console.log('Running cron job every 10 seconds to check expiring reminders...');
+//     checkExpiringReminders();
+// checkOverdueReminders();
+
+// });
