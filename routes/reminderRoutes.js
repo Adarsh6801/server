@@ -28,6 +28,10 @@ router.post(
     authMiddleware,
     reminderController.getReminders // Controller
   );
-
+  router.delete(
+    '/delete_reminders',
+    authMiddleware,
+    reminderController.deleteReminders // Controller
+  );
 
 module.exports = router;

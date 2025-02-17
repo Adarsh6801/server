@@ -79,14 +79,35 @@ console.log(user,'useron cont')
     }
 };
 
-exports.getReminders= async (req, res)=>{
-    try{
-        const user=req.user
-        const getAllReminders= await Reminder.find({user_id:user._id})
+exports.getReminders = async (req, res) => {
+    try {
+        const user = req.user;
+        const getAllReminders = await Reminder.find({ user_id: user._id }) || []; // Ensures empty array if null
+
         return res.status(200).json(getAllReminders);
-        
-    }catch(error){
-        res.status(500).json({ error: error.message });
-        return 
+    } catch (error) {
+        return res.status(500).json({ error: error.message });
     }
-}
+};
+
+
+exports.deleteReminders = async (req, res) => {
+    try {
+        const { ids } = req.body;
+        const user = req.user;
+
+        if (ids && ids.length > 0) {
+            // Delete specific reminders
+            await Reminder.deleteMany({ _id: { $in: ids }, user_id: user._id });
+        } else {
+            // Delete all reminders for the user
+            await Reminder.deleteMany({ user_id: user._id });
+        }
+
+        return res.status(200).json({ message: "Reminders deleted successfully" });
+    } catch (error) {
+        console.log(error,'error');
+        
+        return res.status(500).json({ error: error.message });
+    }
+};
