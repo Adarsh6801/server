@@ -13,7 +13,7 @@ const sendFCMNotification = async (token,message, reminder) => {
         body: message,
       },
       data: {
-        id: reminder._id.toString(),
+        _id: reminder._id.toString(),
         title: reminder.title,
         description: reminder.description || '',
         date: reminder.date.toString(),
@@ -48,7 +48,7 @@ const sendSMSNotification = async (token,reminder,message) => {
         body: message,
       },
       data: {
-        id: reminder._id.toString(),
+        _id: reminder._id.toString(),
         title: reminder.title,
         description: reminder.description || '',
         date: reminder.date.toString(),
@@ -158,9 +158,9 @@ cron.schedule('*/2 * * * *', () => {
     checkExpiringReminders();
     checkOverdueReminders();
   });
-//   cron.schedule('*/10 * * * * *', () => {
-//     console.log('Running cron job every 10 seconds to check expiring reminders...');
-//     checkExpiringReminders();
-// checkOverdueReminders();
+  cron.schedule('*/10 * * * * *', () => {
+    console.log('Running cron job every 10 seconds to check expiring reminders...');
+    checkExpiringReminders();
+checkOverdueReminders();
 
-// });
+});
