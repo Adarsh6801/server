@@ -78,10 +78,10 @@ const checkExpiringReminders = async () => {
   try {
     const now = Date.now();
     const sevenDaysLater = now + 7 * 24 * 60 * 60 * 1000; // 7 days from now
-
+    const thirtyDaysLater = now + 30 * 24 * 60 * 60 * 1000;
     // Find reminders whose date is within the next 7 days
     const reminders = await Reminder.find({
-      date: { $gte: now, $lte: sevenDaysLater },
+      date: { $gte: now, $lte: thirtyDaysLater },
     });
     console.log(reminders, 'reminders');
 
@@ -92,12 +92,12 @@ const checkExpiringReminders = async () => {
       console.log(daysRemaining, 'daysRemaining');
 
       // Check if days remaining is within the desired range
-      if ([7, 6, 5, 4, 3, 2, 1].includes(daysRemaining)) {
+      if ([30, 15, 7, 6, 5, 4, 3, 2, 1].includes(daysRemaining)) {
         // Fetch the user's FCM token using the user_id from the reminder
         const user = await User.findById(reminder.user_id);
 
         if (user && user.device_info) {
-          const message = `Your reminder "${reminder.title}" is due in ${daysRemaining} day(s).`;
+          const message = `"${reminder.title}" is due in ${daysRemaining} day(s).`;
           await sendFCMNotification(user.device_info.fcm, message, reminder);
         } else {
           console.error('User or FCM token not found for reminder:', reminder._id);
@@ -131,7 +131,7 @@ const checkOverdueReminders = async () => {
       console.log(user, 'useruser');
 
       if (user && user.device_info) {
-        const message = `Your reminder "${reminder.title}" is overdue by ${daysOverdue} day(s). Please take action.`;
+        const message = `"${reminder.title}" is overdue by ${daysOverdue} day(s). Please take action.`;
 
         await sendSMSNotification(user.device_info.fcm, reminder, message);
       } else {
@@ -158,9 +158,9 @@ cron.schedule('*/2 * * * *', () => {
     checkExpiringReminders();
     checkOverdueReminders();
   });
-  cron.schedule('*/10 * * * * *', () => {
-    console.log('Running cron job every 10 seconds to check expiring reminders...');
-    checkExpiringReminders();
-checkOverdueReminders();
+//   cron.schedule('*/10 * * * * *', () => {
+//     console.log('Running cron job every 10 seconds to check expiring reminders...');
+//     checkExpiringReminders();
+// checkOverdueReminders();
 
-});
+// });

@@ -54,11 +54,11 @@ checkOverdueReminders();
 
 });
 
-cron.schedule('*/2 * * * *', () => {
-    console.log('Running cron job every 2 minutes to check expiring reminders...');
-    checkExpiringReminders();
-    checkOverdueReminders();
-  });
+// cron.schedule('*/2 * * * *', () => {
+//     console.log('Running cron job every 2 minutes to check expiring reminders...');
+//     checkExpiringReminders();
+//     checkOverdueReminders();
+//   });
 
 
 

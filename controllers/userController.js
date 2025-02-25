@@ -54,3 +54,11 @@ exports.createUserId = async (req, res) => {
       res.status(500).json({ error: err.message });
     }
   };
+
+  exports.updateUser= async (req, res)=>{
+    try{
+
+    }catch(error){
+      res.status(500).json({ error: err.message });
+    }
+  }
